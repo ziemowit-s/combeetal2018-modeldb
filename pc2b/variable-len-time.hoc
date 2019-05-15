@@ -1,0 +1,7 @@
+// use variable time step
+// for ions precise computation
+// Ziemek
+objref cvode
+cvode = new CVode()
+cvode.active(1)
+execute("using_cvode_=1")

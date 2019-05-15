@@ -1,0 +1,30 @@
+objref icaList,icaFile
+objref timeVec, icaVec, xVec
+
+icaFile = new File()
+icaList = new List()
+xVec = new Vector()
+timeVec = new Vector()
+
+timeVec.record(&t)
+
+// apical_trunk_list
+// apical_non_trunk_list
+forsec apical_non_trunk_list for (x){
+	icaVec = new Vector()
+	icaVec.record(&ica(x))
+	icaList.append(icaVec)
+    xVec.append(x3d(x))
+}
+
+proc create_apical_non_trunk_ica_file() {
+	icaFile.wopen("apical_non_trunk_ica.dat")
+	for i=0, xVec.size()-1 {
+	    icaFile.printf("sec_%g:", i)
+        for ii=0, timeVec.size()-1 {
+            icaFile.printf(" %g", icaList.o(i).x(ii))
+        }
+        icaFile.printf("\n")
+	}
+	icaFile.close()
+}
