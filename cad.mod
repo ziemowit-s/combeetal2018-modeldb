@@ -6,12 +6,12 @@ TITLE decay of internal calcium concentration
 : Simple model of ATPase pump with 3 kinetic constants (Destexhe 92)
 :     Cai + P <-> CaP -> Cao + P  (k1,k2,k3)
 : A Michaelis-Menten approximation is assumed, which reduces the complexity
-: of the system to 2 parameters: 
+: of the system to 2 parameters:
 :       kt = <tot enzyme concentration> * k3  -> TIME CONSTANT OF THE PUMP
 :	kd = k2/k1 (dissociation constant)    -> EQUILIBRIUM CALCIUM VALUE
-: The values of these parameters are chosen assuming a high affinity of 
-: the pump to calcium and a low transport capacity (cfr. Blaustein, 
-: TINS, 11: 438, 1988, and references therein).  
+: The values of these parameters are chosen assuming a high affinity of
+: the pump to calcium and a low transport capacity (cfr. Blaustein,
+: TINS, 11: 438, 1988, and references therein).
 :
 : Units checked using "modlunit" -> factor 10000 needed in ca entry
 :
@@ -20,7 +20,7 @@ TITLE decay of internal calcium concentration
 : All variables are range variables
 :
 :
-: This mechanism was published in:  Destexhe, A. Babloyantz, A. and 
+: This mechanism was published in:  Destexhe, A. Babloyantz, A. and
 : Sejnowski, TJ.  Ionic mechanisms for intrinsic slow oscillations in
 : thalamic relay neurons. Biophys. J. 65: 1538-1552, 1993)
 :
@@ -32,14 +32,14 @@ TITLE decay of internal calcium concentration
 : subtypes in CA1 pyramidal neurons". J. of Neuroscience 19(20) 8789-8798, 1999.
 :
 :  factor 10000 is replaced by 10000/18 needed in ca entry
-:  taur --rate of calcium removal-- is replaced by taur*7 (7 times faster) 
+:  taur --rate of calcium removal-- is replaced by taur*7 (7 times faster)
 
 
 INDEPENDENT {t FROM 0 TO 1 WITH 1 (ms)}
 
 NEURON {
 	SUFFIX cad
-	USEION ca READ ica, cai WRITE cai	
+	USEION ca READ ica, cai WRITE cai
         RANGE ca, depth,cainf,taur
 }
 
@@ -52,7 +52,6 @@ UNITS {
 	FARADAY = (faraday) (coulomb)
 }
 
-
 PARAMETER {
 	depth	= .05	(um)		: depth of shell
 	taur	= 1400	(ms)		: rate of calcium removal
@@ -61,7 +60,7 @@ PARAMETER {
 }
 
 STATE {
-	ca		(mM) 
+	ca		(mM)
 }
 
 INITIAL {
@@ -72,20 +71,18 @@ ASSIGNED {
 	ica		(mA/cm2)
 	drive_channel	(mM/ms)
 }
-	
+
 BREAKPOINT {
 	SOLVE state METHOD euler
 }
 
-DERIVATIVE state { 
+DERIVATIVE state {
 
 	drive_channel =  - (10000) * ica / (2 * FARADAY * depth)
-	if (drive_channel <= 0.) { drive_channel = 0.  }   : cannot pump inward 
-         
+	if (drive_channel <= 0.) { drive_channel = 0.  }   : cannot pump inward
+
 	ca' = drive_channel/18 + (cainf-ca)/(taur)
-      : ca' = drive_channel/20 + (cainf -ca)/(taur*9)
-       
-  
+    : ca' = drive_channel/20 + (cainf -ca)/(taur*9)
 
 	cai = ca
 }

@@ -1,47 +1,48 @@
-objref ica_trunk_list, ica_non_trunk_list,ica_file
-objref time_vec, ica_trunk_vec, ica_non_trunk_vec, x_vec
+objref cai_trunk_list, cai_non_trunk_list,cai_file
+objref time_vec, cai_trunk_vec, cai_non_trunk_vec, x_vec
 
-ica_file = new File()
-ica_trunk_list = new List()
-ica_non_trunk_list = new List()
+cai_file = new File()
+cai_trunk_list = new List()
+cai_non_trunk_list = new List()
 
 time_vec = new Vector()
 time_vec.record(&t)
 
 forsec apical_non_trunk_list for (x){
-	ica_non_trunk_vec = new Vector()
-	ica_non_trunk_vec.record(&ica(x))
-	ica_non_trunk_list.append(ica_non_trunk_vec)
+	cai_non_trunk_vec = new Vector()
+	cai_non_trunk_vec.record(&cai(x))
+	cai_non_trunk_list.append(cai_non_trunk_vec)
 }
 
 forsec apical_trunk_list for (x){
-	ica_trunk_vec = new Vector()
-	ica_trunk_vec.record(&ica(x))
-	ica_trunk_list.append(ica_trunk_vec)
+	cai_trunk_vec = new Vector()
+	cai_trunk_vec.record(&cai(x))
+	cai_trunk_list.append(cai_trunk_vec)
 }
 
-proc record_apical_non_trunk_ica() {
-    // $s1: path to save the file
-	ica_file.wopen($s1)
-	for i=0, ica_non_trunk_list.count()-1 {
-	    ica_file.printf("sec_%g:", i)
+proc record_apical_non_trunk_cai() {
+    // $s1: string path to save the file
+    // return: saved value in mM
+	cai_file.wopen($s1)
+	for i=0, cai_non_trunk_list.count()-1 {
+	    cai_file.printf("sec_%g:", i)
         for ii=0, time_vec.size()-1 {
-            ica_file.printf(" %g", ica_non_trunk_list.o(i).x(ii))
+            cai_file.printf(" %g", cai_non_trunk_list.o(i).x(ii))
         }
-        ica_file.printf("\n")
+        cai_file.printf("\n")
 	}
-	ica_file.close()
+	cai_file.close()
 }
 
-proc record_apical_trunk_ica() {
-    // $s1: path to save the file
-	ica_file.wopen($s1)
-	for i=0, ica_trunk_list.count()-1 {
-	    ica_file.printf("sec_%g:", i)
+proc record_apical_trunk_cai() {
+    // $s1: string path to save the file
+	cai_file.wopen($s1)
+	for i=0, cai_trunk_list.count()-1 {
+	    cai_file.printf("sec_%g:", i)
         for ii=0, time_vec.size()-1 {
-            ica_file.printf(" %g", ica_non_trunk_list.o(i).x(ii))
+            cai_file.printf(" %g", cai_non_trunk_list.o(i).x(ii))
         }
-        ica_file.printf("\n")
+        cai_file.printf("\n")
 	}
-	ica_file.close()
+	cai_file.close()
 }
