@@ -242,7 +242,8 @@ proc main(){
 	geom_nseg()
 	run()
 	/////////////////////////////////////
-	create_apical_non_trunk_ica_file()
+    record_apical_non_trunk_ica("apical_non_trunk_ica.dat")
+	record_apical_trunk_ica("apical_trunk_ica.dat")
 
 	// print the spike number
 	if(!back) printf("\n Current: %.4f nA | # Spikes: %d\n", current,  apc.n)

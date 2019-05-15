@@ -1,30 +1,47 @@
-objref icaList,icaFile
-objref timeVec, icaVec, xVec
+objref ica_trunk_list, ica_non_trunk_list,ica_file
+objref time_vec, ica_trunk_vec, ica_non_trunk_vec, x_vec
 
-icaFile = new File()
-icaList = new List()
-xVec = new Vector()
-timeVec = new Vector()
+ica_file = new File()
+ica_trunk_list = new List()
+ica_non_trunk_list = new List()
 
-timeVec.record(&t)
+time_vec = new Vector()
+time_vec.record(&t)
 
-// apical_trunk_list
-// apical_non_trunk_list
 forsec apical_non_trunk_list for (x){
-	icaVec = new Vector()
-	icaVec.record(&ica(x))
-	icaList.append(icaVec)
-    xVec.append(x3d(x))
+	ica_non_trunk_vec = new Vector()
+	ica_non_trunk_vec.record(&ica(x))
+	ica_non_trunk_list.append(ica_non_trunk_vec)
 }
 
-proc create_apical_non_trunk_ica_file() {
-	icaFile.wopen("apical_non_trunk_ica.dat")
-	for i=0, xVec.size()-1 {
-	    icaFile.printf("sec_%g:", i)
-        for ii=0, timeVec.size()-1 {
-            icaFile.printf(" %g", icaList.o(i).x(ii))
+forsec apical_trunk_list for (x){
+	ica_trunk_vec = new Vector()
+	ica_trunk_vec.record(&ica(x))
+	ica_trunk_list.append(ica_trunk_vec)
+}
+
+proc record_apical_non_trunk_ica() {
+    // $s1: path to save the file
+	ica_file.wopen($s1)
+	for i=0, ica_non_trunk_list.count()-1 {
+	    ica_file.printf("sec_%g:", i)
+        for ii=0, time_vec.size()-1 {
+            ica_file.printf(" %g", ica_non_trunk_list.o(i).x(ii))
         }
-        icaFile.printf("\n")
+        ica_file.printf("\n")
 	}
-	icaFile.close()
+	ica_file.close()
+}
+
+proc record_apical_trunk_ica() {
+    // $s1: path to save the file
+	ica_file.wopen($s1)
+	for i=0, ica_trunk_list.count()-1 {
+	    ica_file.printf("sec_%g:", i)
+        for ii=0, time_vec.size()-1 {
+            ica_file.printf(" %g", ica_non_trunk_list.o(i).x(ii))
+        }
+        ica_file.printf("\n")
+	}
+	ica_file.close()
 }
