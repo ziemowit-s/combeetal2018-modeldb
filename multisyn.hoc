@@ -37,7 +37,7 @@ xopen_morphology("cell.hoc")				//reads morpholofy from the file
 xopen_morphology("cell-analysis-simple.hoc") //reads simplified version of CA
 
 
-			// --------------- Creating lists-----------------
+// --------------- Creating lists-----------------
 
 xopen("lib/TP-lib.hoc")
 Tip_sections(apical_non_trunk_list,apical_trunk_list,"Apical")		
@@ -55,8 +55,6 @@ oblique_sections(apical_tip_list,apical_trunk_list,num_tips)		// apical dendrite
 
 xopen("lib/vector-distance.hoc")
 
-
-//-----------------------------------------------------------------------------------------------------
 printf("Setting up cell\n")                                         // load cell-setup to
 xopen("cell-setup.hoc")                                             // specify all mechanisms, membrane properties etc
 
@@ -140,104 +138,100 @@ proc main(){
 
 	dist=14
 	rel=0.5
-        interval=25 // 10 25
-        ampa= 1.2*0.00156
-        nmda=1.2*0.000882
-        Alpha=0.35
-        Beta=0.035
+    interval=25 // 10 25
+    ampa= 1.2*0.00156
+    nmda=1.2*0.000882
+    Alpha=0.35
+    Beta=0.035
 
 
-		for j=0, 5 {
-	trunk[10+j] {
-	//apic[46]
-			s[j] = new NetStims(rel)
-			s[j].interval=interval
-			s[j].number = 10
-			s[j].noise=0
-			s[j].start=1000
+    for j=0, 5 {
+        trunk[10+j] {
+            s[j] = new NetStims(rel)
+            s[j].interval=interval
+            s[j].number = 10
+            s[j].noise=0
+            s[j].start=1000
 
-			rsynmda[j] = new nmdanet(rel)
-			rsyn[j] = new Exp2Syn(rel)
-			rsyn[j].e=0
-			rsyn[j].tau1 = .5
-			rsyn[j].tau2 = 1.0
+            rsynmda[j] = new nmdanet(rel)
+            rsyn[j] = new Exp2Syn(rel)
+            rsyn[j].e=0
+            rsyn[j].tau1 = .5
+            rsyn[j].tau2 = 1.0
 
-			nc[j] = new NetCon(s[j],rsyn[j],0,0,ampa)  //8*4.2e-3 new
+            nc[j] = new NetCon(s[j],rsyn[j],0,0,ampa)  //8*4.2e-3 new
 
-			ncnmda[j] = new NetCon(s[j],rsynmda[j],0,0,nmda) //pc2b 1 new
-                        rsynmda[j].Alpha=Alpha
-                        rsynmda[j].Beta=Beta
-	}
-}
-		for i=0, 5 {
-	apic[27+i] {
-	//apic[46]
-			s[i+6] = new NetStims(rel)
-			s[i+6].interval=interval
-			s[i+6].number = 10
-			s[i+6].noise=0
-			s[i+6].start=1000
+            ncnmda[j] = new NetCon(s[j],rsynmda[j],0,0,nmda) //pc2b 1 new
+            rsynmda[j].Alpha=Alpha
+            rsynmda[j].Beta=Beta
+        }
+    }
+    for i=0, 5 {
+        apic[27+i] {
+            s[i+6] = new NetStims(rel)
+            s[i+6].interval=interval
+            s[i+6].number = 10
+            s[i+6].noise=0
+            s[i+6].start=1000
 
-			rsynmda[i+6] = new nmdanet(rel)
-			rsyn[i+6] = new Exp2Syn(rel)
-			rsyn[i+6].e=0
-			rsyn[i+6].tau1 = .5
-			rsyn[i+6].tau2 = 1.0
+            rsynmda[i+6] = new nmdanet(rel)
+            rsyn[i+6] = new Exp2Syn(rel)
+            rsyn[i+6].e=0
+            rsyn[i+6].tau1 = .5
+            rsyn[i+6].tau2 = 1.0
 
-			nc[i+6] = new NetCon(s[i+6],rsyn[i+6],0,0,ampa)  //8*4.2e-3 new
+            nc[i+6] = new NetCon(s[i+6],rsyn[i+6],0,0,ampa)  //8*4.2e-3 new
 
-			ncnmda[i+6] = new NetCon(s[i+6],rsynmda[i+6],0,0,nmda) //pc2b 1 new
-                        rsynmda[i+6].Alpha=Alpha
-                        rsynmda[i+6].Beta=Beta
-	}
-}
+            ncnmda[i+6] = new NetCon(s[i+6],rsynmda[i+6],0,0,nmda) //pc2b 1 new
+            rsynmda[i+6].Alpha=Alpha
+            rsynmda[i+6].Beta=Beta
+        }
+    }
 
 	rel=0.2
-		for i=0, 3 {
-	apic[28+i] {
-	//apic[46]
-			s[i+12] = new NetStims(rel)
-			s[i+12].interval=interval
-			s[i+12].number = 10
-			s[i+12].noise=0
-			s[i+12].start=1000
+    for i=0, 3 {
+        apic[28+i] {
+            s[i+12] = new NetStims(rel)
+            s[i+12].interval=interval
+            s[i+12].number = 10
+            s[i+12].noise=0
+            s[i+12].start=1000
 
-			rsynmda[i+12] = new nmdanet(rel)
-			rsyn[i+12] = new Exp2Syn(rel)
-			rsyn[i+12].e=0
-			rsyn[i+12].tau1 = .5
-			rsyn[i+12].tau2 = 1.0
+            rsynmda[i+12] = new nmdanet(rel)
+            rsyn[i+12] = new Exp2Syn(rel)
+            rsyn[i+12].e=0
+            rsyn[i+12].tau1 = .5
+            rsyn[i+12].tau2 = 1.0
 
-			nc[i+12] = new NetCon(s[i+12],rsyn[i+12],0,0,ampa)  //8*4.2e-3 new
+            nc[i+12] = new NetCon(s[i+12],rsyn[i+12],0,0,ampa)  //8*4.2e-3 new
 
-			ncnmda[i+12] = new NetCon(s[i+12],rsynmda[i+12],0,0,nmda) //pc2b 1 new
-                        rsynmda[i+12].Alpha=Alpha
-                        rsynmda[i+12].Beta=Beta
-	}
-}
+            ncnmda[i+12] = new NetCon(s[i+12],rsynmda[i+12],0,0,nmda) //pc2b 1 new
+            rsynmda[i+12].Alpha=Alpha
+            rsynmda[i+12].Beta=Beta
+        }
+    }
 	rel=0.8
-		for i=0, 3 {
-	apic[28+i] {
-	//apic[46]
-			s[i+16] = new NetStims(rel)
-			s[i+16].interval=interval
-			s[i+16].number = 10
-			s[i+16].noise=0
-			s[i+16].start=1000
+    for i=0, 3 {
+        apic[28+i] {
+            s[i+16] = new NetStims(rel)
+            s[i+16].interval=interval
+            s[i+16].number = 10
+            s[i+16].noise=0
+            s[i+16].start=1000
 
-			rsynmda[i+16] = new nmdanet(rel)
-			rsyn[i+16] = new Exp2Syn(rel)
-			rsyn[i+16].e=0
-			rsyn[i+16].tau1 = .5
-			rsyn[i+16].tau2 = 1.0
+            rsynmda[i+16] = new nmdanet(rel)
+            rsyn[i+16] = new Exp2Syn(rel)
+            rsyn[i+16].e=0
+            rsyn[i+16].tau1 = .5
+            rsyn[i+16].tau2 = 1.0
 
-			nc[i+16] = new NetCon(s[i+16],rsyn[i+16],0,0,ampa)  //8*4.2e-3 new
+            nc[i+16] = new NetCon(s[i+16],rsyn[i+16],0,0,ampa)  //8*4.2e-3 new
 
-			ncnmda[i+16] = new NetCon(s[i+16],rsynmda[i+16],0,0,nmda) //pc2b 1 new
-                        rsynmda[i+16].Alpha=Alpha
-                        rsynmda[i+16].Beta=Beta
-	}
-}
+            ncnmda[i+16] = new NetCon(s[i+16],rsynmda[i+16],0,0,nmda) //pc2b 1 new
+            rsynmda[i+16].Alpha=Alpha
+            rsynmda[i+16].Beta=Beta
+        }
+    }
 	//////////////run//////////////////////// 
 	geom_nseg()
 	run()
@@ -258,5 +252,4 @@ proc main(){
 }
 
 main()
-/********    end file    ******/
 
