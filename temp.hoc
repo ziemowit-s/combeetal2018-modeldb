@@ -1,20 +1,14 @@
 load_file("nrngui.hoc")
+proc pr(){
+    $o1 printf("this is: %s\n", secname())
+}
 
-create soma
-access soma
+create soma[1]
 
-soma nseg = 1
-soma diam = 18.8
-soma L = 18.8
-soma Ra = 123.0
+proc main() {localobj rr
+    create soma[10]
+    soma[0] rr = new SectionRef()
+    pr(rr)
+}
 
-soma insert hh
-
-objectvar stim
-soma stim = new IClamp(0.5)
-
-stim.del = 100
-stim.dur = 100
-stim.amp = 0.1
-
-tstop = 300
+main()

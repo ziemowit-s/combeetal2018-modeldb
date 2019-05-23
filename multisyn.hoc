@@ -62,11 +62,12 @@ xopen("cell-setup.hoc")                                             // specify a
 ///////////////////Load File//////////////////////
 
 //if(!back) load_file("syndebug.ses")
-if(!back) load_file("trunk.ses")
+if(!back) load_file("spine_head.ses")
 /*cvode_active(1)*/
 
 xopen_morphology("variable-len-time.hoc")   //Ziemek
 xopen_morphology("save-ica.hoc")   //Ziemek
+xopen_morphology("spine.hoc")   //Ziemek
 
 //////   Spike counter//////////
 
@@ -114,6 +115,8 @@ nsyn=22 // all synapse number (used only 20 of them: indexes 0-19)
 objref s[nsyn] // stimuli
 objref rsyn[nsyn], nc[nsyn] // rsyn - AMPA synapse; nc - netcon for AMPA
 objref rsynmda[nsyn], ncnmda[nsyn] // rsynmda - NMDA synapse; ncnmda - netcon for NMDA
+create spine_head[nsyn], spine_neck[nsyn]
+objref spine_neck_ref, spine_head_ref
 
 proc main(){
 	//tol=cvode.atolscale(&soma.v(0.5),1e-8)
@@ -145,40 +148,56 @@ proc main(){
     Alpha=0.35
     Beta=0.035
 
-
     // 6 synapses (0-5 indexes)
-    for j=0, 5 {
-        trunk[10+j] {
-            s[j] = new NetStims(rel)
-            s[j].interval=interval
-            s[j].number = 10
-            s[j].noise=0
-            s[j].start=1000
+    for i=0, 5 {
 
-            rsynmda[j] = new nmdanet(rel)
-            rsyn[j] = new Exp2Syn(rel)
-            rsyn[j].e=0
-            rsyn[j].tau1 = .5
-            rsyn[j].tau2 = 1.0
+            // connect head to neck
+        trunk[10+i] {
+            objref spine_neck_ref, spine_head_ref
+            spine_neck[i] spine_neck_ref = new SectionRef()
+            spine_head[i] spine_head_ref = new SectionRef()
+            attach_spine(spine_neck_ref, spine_head_ref)
+        }
 
-            nc[j] = new NetCon(s[j],rsyn[j],0,0,ampa)  //8*4.2e-3 new
+        spine_head[i] {
+            s[i] = new NetStims(0.5)
+            s[i].interval=interval
+            s[i].number = 10
+            s[i].noise=0
+            s[i].start=1000
 
-            ncnmda[j] = new NetCon(s[j],rsynmda[j],0,0,nmda) //pc2b 1 new
-            rsynmda[j].Alpha=Alpha
-            rsynmda[j].Beta=Beta
+            rsynmda[i] = new nmdanet(0.5)
+            rsyn[i] = new Exp2Syn(0.5)
+            rsyn[i].e=0
+            rsyn[i].tau1 = .5
+            rsyn[i].tau2 = 1.0
+
+            // new NetCon(&source_v, synapse, threshold, delay, weight)
+            nc[i] = new NetCon(s[i],rsyn[i],0,0,ampa)  //8*4.2e-3 new
+
+            ncnmda[i] = new NetCon(s[i],rsynmda[i],0,0,nmda) //pc2b 1 new
+            rsynmda[i].Alpha=Alpha
+            rsynmda[i].Beta=Beta
         }
     }
     // 6 synapses (6-11 indexes)
     for i=0, 5 {
-        apic[27+i] {
-            s[i+6] = new NetStims(rel)
+        apic[10+i] {
+            objref spine_neck_ref, spine_head_ref
+            spine_neck[i+6] spine_neck_ref = new SectionRef()
+            spine_head[i+6] spine_head_ref = new SectionRef()
+            attach_spine(spine_neck_ref, spine_head_ref)
+        }
+
+        spine_head[i+6] {
+            s[i+6] = new NetStims(0.5)
             s[i+6].interval=interval
             s[i+6].number = 10
             s[i+6].noise=0
             s[i+6].start=1000
 
-            rsynmda[i+6] = new nmdanet(rel)
-            rsyn[i+6] = new Exp2Syn(rel)
+            rsynmda[i+6] = new nmdanet(0.5)
+            rsyn[i+6] = new Exp2Syn(0.5)
             rsyn[i+6].e=0
             rsyn[i+6].tau1 = .5
             rsyn[i+6].tau2 = 1.0
@@ -194,15 +213,23 @@ proc main(){
     // 4 synapses (12-15 indexes)
 	rel=0.2
     for i=0, 3 {
+        //apic[28+i]
         apic[28+i] {
-            s[i+12] = new NetStims(rel)
+            objref spine_neck_ref, spine_head_ref
+            spine_neck[i+12] spine_neck_ref = new SectionRef()
+            spine_head[i+12] spine_head_ref = new SectionRef()
+            attach_spine(spine_neck_ref, spine_head_ref)
+        }
+
+        spine_head[i+12] {
+            s[i+12] = new NetStims(0.5)
             s[i+12].interval=interval
             s[i+12].number = 10
             s[i+12].noise=0
             s[i+12].start=1000
 
-            rsynmda[i+12] = new nmdanet(rel)
-            rsyn[i+12] = new Exp2Syn(rel)
+            rsynmda[i+12] = new nmdanet(0.5)
+            rsyn[i+12] = new Exp2Syn(0.5)
             rsyn[i+12].e=0
             rsyn[i+12].tau1 = .5
             rsyn[i+12].tau2 = 1.0
@@ -218,14 +245,21 @@ proc main(){
 	rel=0.8
     for i=0, 3 {
         apic[28+i] {
-            s[i+16] = new NetStims(rel)
+            objref spine_neck_ref, spine_head_ref
+            spine_neck[i+16] spine_neck_ref = new SectionRef()
+            spine_head[i+16] spine_head_ref = new SectionRef()
+            attach_spine(spine_neck_ref, spine_head_ref)
+        }
+
+        spine_head[i+16] {
+            s[i+16] = new NetStims(0.5)
             s[i+16].interval=interval
             s[i+16].number = 10
             s[i+16].noise=0
             s[i+16].start=1000
 
-            rsynmda[i+16] = new nmdanet(rel)
-            rsyn[i+16] = new Exp2Syn(rel)
+            rsynmda[i+16] = new nmdanet(0.5)
+            rsyn[i+16] = new Exp2Syn(0.5)
             rsyn[i+16].e=0
             rsyn[i+16].tau1 = .5
             rsyn[i+16].tau2 = 1.0

@@ -14,5 +14,7 @@ stimulation selectively at slow gamma frequencies, and to identify the mechanism
  in CA1 output with respect to CA3 input. In addition, phase-locking, assessed by the vector strength, was more precise 
  for slow gamma than fast gamma input. ..." 
  
+# Compile
+nrnivmodl
 # Reference: 
 1 . Combe CL, Canavier CC, Gasparini S (2018) Intrinsic Mechanisms of Frequency Selectivity in the Proximal Dendrites of CA1 Pyramidal Neurons. J Neurosci 38:8110-8127 [PubMed]
