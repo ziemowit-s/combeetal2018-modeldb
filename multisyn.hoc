@@ -110,9 +110,10 @@ proc insert_IClamp() {
 
 ////////////////////Main///////////////////
 
-nsyn=22
-objref  s[nsyn], rsyn[nsyn], nc[nsyn]
-objref rsynmda[nsyn], ncnmda[nsyn]
+nsyn=22 // all synapse number (used only 20 of them: indexes 0-19)
+objref s[nsyn] // stimuli
+objref rsyn[nsyn], nc[nsyn] // rsyn - AMPA synapse; nc - netcon for AMPA
+objref rsynmda[nsyn], ncnmda[nsyn] // rsynmda - NMDA synapse; ncnmda - netcon for NMDA
 
 proc main(){
 	//tol=cvode.atolscale(&soma.v(0.5),1e-8)
@@ -145,6 +146,7 @@ proc main(){
     Beta=0.035
 
 
+    // 6 synapses (0-5 indexes)
     for j=0, 5 {
         trunk[10+j] {
             s[j] = new NetStims(rel)
@@ -166,6 +168,7 @@ proc main(){
             rsynmda[j].Beta=Beta
         }
     }
+    // 6 synapses (6-11 indexes)
     for i=0, 5 {
         apic[27+i] {
             s[i+6] = new NetStims(rel)
@@ -188,6 +191,7 @@ proc main(){
         }
     }
 
+    // 4 synapses (12-15 indexes)
 	rel=0.2
     for i=0, 3 {
         apic[28+i] {
@@ -210,6 +214,7 @@ proc main(){
             rsynmda[i+12].Beta=Beta
         }
     }
+    // 4 synapses (16-19 indexes)
 	rel=0.8
     for i=0, 3 {
         apic[28+i] {
