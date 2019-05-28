@@ -61,13 +61,12 @@ xopen("cell-setup.hoc")                                             // specify a
 
 ///////////////////Load File//////////////////////
 
-//if(!back) load_file("syndebug.ses")
-if(!back) load_file("spine_head.ses")
 /*cvode_active(1)*/
 
+xopen_morphology("spine.hoc")   //Ziemek
 xopen_morphology("variable-len-time.hoc")   //Ziemek
 xopen_morphology("save-ica.hoc")   //Ziemek
-xopen_morphology("spine.hoc")   //Ziemek
+//if(!back) load_file("pspine_head.ses") //Ziemek
 
 //////   Spike counter//////////
 
@@ -115,8 +114,34 @@ nsyn=22 // all synapse number (used only 20 of them: indexes 0-19)
 objref s[nsyn] // stimuli
 objref rsyn[nsyn], nc[nsyn] // rsyn - AMPA synapse; nc - netcon for AMPA
 objref rsynmda[nsyn], ncnmda[nsyn] // rsynmda - NMDA synapse; ncnmda - netcon for NMDA
-create spine_head[nsyn], spine_neck[nsyn]
+create spine_head[1], spine_neck[1]
 objref spine_neck_ref, spine_head_ref
+
+spine_neck_diam = 0.125 /* um (low resistance) */
+spine_neck_len = 1.0 /* um */
+spine_head_diam = 0.5 /* um */
+spine_head_len = 0.5 /* um */
+
+spine_neck[0] {
+    L = spine_neck_len
+    diam = spine_neck_diam
+}
+spine_head[0] {
+    L = spine_head_len
+    diam = spine_head_diam
+}
+connect spine_head[0](0), spine_neck[0](1)
+connect spine_neck[0](0), trunk[10](0.5)
+
+objref shape_head, obs_secs
+shape_head = new Shape()
+obs_secs = new SectionList()
+spine_head[0] obs_secs.append()
+spine_neck[0] obs_secs.append()
+
+spine_head[0] shape_head.color(3)
+shape_head.observe(obs_secs)
+shape_head.show(0)
 
 proc main(){
 	//tol=cvode.atolscale(&soma.v(0.5),1e-8)
@@ -151,7 +176,6 @@ proc main(){
     // 6 synapses (0-5 indexes)
     for i=0, 5 {
 
-            // connect head to neck
         trunk[10+i] {
             objref spine_neck_ref, spine_head_ref
             spine_neck[i] spine_neck_ref = new SectionRef()
@@ -179,14 +203,16 @@ proc main(){
             rsynmda[i].Alpha=Alpha
             rsynmda[i].Beta=Beta
         }
+        */
     }
     // 6 synapses (6-11 indexes)
     for i=0, 5 {
+        /*
         apic[10+i] {
             objref spine_neck_ref, spine_head_ref
             spine_neck[i+6] spine_neck_ref = new SectionRef()
             spine_head[i+6] spine_head_ref = new SectionRef()
-            attach_spine(spine_neck_ref, spine_head_ref)
+            //attach_spine(spine_neck_ref, spine_head_ref)
         }
 
         spine_head[i+6] {
@@ -208,17 +234,18 @@ proc main(){
             rsynmda[i+6].Alpha=Alpha
             rsynmda[i+6].Beta=Beta
         }
+        */
     }
 
     // 4 synapses (12-15 indexes)
 	rel=0.2
     for i=0, 3 {
-        //apic[28+i]
+        /*
         apic[28+i] {
             objref spine_neck_ref, spine_head_ref
             spine_neck[i+12] spine_neck_ref = new SectionRef()
             spine_head[i+12] spine_head_ref = new SectionRef()
-            attach_spine(spine_neck_ref, spine_head_ref)
+            //attach_spine(spine_neck_ref, spine_head_ref)
         }
 
         spine_head[i+12] {
@@ -240,15 +267,17 @@ proc main(){
             rsynmda[i+12].Alpha=Alpha
             rsynmda[i+12].Beta=Beta
         }
+        */
     }
     // 4 synapses (16-19 indexes)
 	rel=0.8
     for i=0, 3 {
+        /*
         apic[28+i] {
             objref spine_neck_ref, spine_head_ref
             spine_neck[i+16] spine_neck_ref = new SectionRef()
             spine_head[i+16] spine_head_ref = new SectionRef()
-            attach_spine(spine_neck_ref, spine_head_ref)
+            //attach_spine(spine_neck_ref, spine_head_ref)
         }
 
         spine_head[i+16] {
@@ -270,6 +299,7 @@ proc main(){
             rsynmda[i+16].Alpha=Alpha
             rsynmda[i+16].Beta=Beta
         }
+        */
     }
 	//////////////run//////////////////////// 
 	geom_nseg()

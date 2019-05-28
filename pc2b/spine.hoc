@@ -28,13 +28,10 @@ proc attach_spine() {
     // assume that concrete section is accessed when proc is call
     // $o1 - spine_neck
     // $o2 - spine_head
-    // spines dims
-    $o1 L = spine_neck_len
-    $o1 diam = spine_neck_diam
-    $o2 L = spine_head_len
-    $o2 diam = spine_head_diam
-    // spines mechanisms
     $o1 {
+        L = spine_neck_len
+        diam = spine_neck_diam
+
         insert pas
         e_pas=Vrest
         g_pas=1/RmDend
@@ -44,8 +41,12 @@ proc attach_spine() {
         taur_cad=14
         insert ds
         insert dca
+        printf("NECK LEN: %.2f\n", L)
+        printf("NECK DIAM: %.2f\n", diam)
     }
-    $o2 {
+    $o1.sec {
+        L = spine_head_len
+        diam = spine_head_diam
         insert pas
         e_pas=Vrest
         g_pas=1/RmDend
@@ -62,17 +63,20 @@ proc attach_spine() {
         depth_cad=spine_head_diam/2
         insert ds
         insert dca
+
+        printf("HEAD LEN: %.2f\n", L)
+        printf("HEAD DIAM: %.2f\n", diam)
     }
 
     // add spines to lists
-    $o1 spine_neck_list.append()
-    $o2 spine_head_list.append()
+    $o1.sec spine_neck_list.append()
+    $o2.sec spine_head_list.append()
 
     // connect neck to section
     connect $o1.sec(0), rel
     print secname(), rel
     // connect head to neck
-    $o1 connect $o2.sec(0), 1
+    $o1.sec connect $o2.sec(0), 1
     // loc(0.5) - access to 'this' section, which is accessed before proc is called
     //$o1.sec loc(0.5)
 }
