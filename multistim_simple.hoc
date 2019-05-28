@@ -1,0 +1,41 @@
+load_file("nrngui.hoc")
+
+create soma, trunk[5], apic[4],  axon
+
+// MORPHOLOGY
+l_general = 50
+diam_general = 1
+
+soma {
+    L = 10
+    diam = 5
+}
+axon {
+    L = l_general
+    diam = diam_general
+}
+forsec "trunk" {
+    L = l_general
+    diam = diam_general
+}
+forsec "apic" {
+    L = l_general
+    diam = diam_general
+}
+
+// CONNECT
+connect axon(0), soma(1)
+connect trunk[0](0), soma(0)
+connect trunk[1](0), trunk[0](1)
+connect trunk[2](0), trunk[1](1)
+connect trunk[3](0), trunk[2](1)
+connect trunk[4](0), trunk[3](1)
+connect apic[0](0), trunk[1](1)
+connect apic[1](0), trunk[2](1)
+connect apic[2](0), trunk[3](1)
+connect apic[3](0), trunk[4](1)
+
+// SHOW
+objref shape_head
+shape_head = new Shape()
+shape_head.show(0)
