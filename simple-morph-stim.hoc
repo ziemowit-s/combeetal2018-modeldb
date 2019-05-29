@@ -1,0 +1,68 @@
+load_file("nrngui.hoc")
+load_file("pc2b/spine.hoc")
+
+napic = 4
+nsyn = 4
+ntrunk = 5
+create soma, trunk[ntrunk], apic[napic], axon
+
+load_file("simple-morph/simple-morph-cell-setup.hoc")
+
+// MORPHOLOGY
+l_general = 50
+diam_general = 1
+soma {
+    L = 10
+    diam = 5
+}
+axon {
+    L = l_general
+    diam = diam_general
+}
+forsec "trunk" {
+    L = l_general
+    diam = diam_general
+}
+forsec "apic" {
+    L = l_general
+    diam = diam_general
+}
+
+// CONNECTIONS
+connect axon(0), soma(1)
+connect trunk[0](0), soma(0)
+connect trunk[1](0), trunk[0](1)
+connect trunk[2](0), trunk[1](1)
+connect trunk[3](0), trunk[2](1)
+connect trunk[4](0), trunk[3](1)
+connect apic[0](0), trunk[1](1)
+connect apic[1](0), trunk[2](1)
+connect apic[2](0), trunk[3](1)
+connect apic[3](0), trunk[4](1)
+
+// SYNAPSES
+objref s[nsyn] // stimuli
+objref rsyn[nsyn], nc[nsyn] // rsyn - AMPA synapse; nc - netcon for AMPA
+objref rsynmda[nsyn], ncnmda[nsyn] // rsynmda - NMDA synapse; ncnmda - netcon for NMDA
+create spine_head[nsyn], spine_neck[nsyn]
+
+rel=0.5
+objref spine_neck_ref, spine_head_ref
+for i=0, napic-1 {
+    print i
+    objref spine_neck_ref, spine_head_ref
+    spine_neck[i] spine_neck_ref = new SectionRef()
+    spine_head[i] spine_head_ref = new SectionRef()
+    apic[i] attach_spine(spine_neck_ref, spine_head_ref, rel)
+}
+
+// NEURON SHAPE SHOW
+objref shape
+shape = new Shape()
+soma shape.color(1) // black
+axon shape.color(3) // blue
+forsec "apic" shape.color(2) // red
+forsec "trunk" shape.color(4) //green
+forsec "spine_neck" shape.color(5) //green
+forsec "spine_head" shape.color(6) //green
+shape.show(0)

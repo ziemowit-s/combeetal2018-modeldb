@@ -1,8 +1,3 @@
-// Ziemek
-objref spine_head_list, spine_neck_list
-spine_neck_list = new SectionList()
-spine_head_list = new SectionList()
-
 // Passive properties from Migliore 2005
 Vrest = -65
 celsius = 35.0
@@ -28,7 +23,8 @@ proc attach_spine() {
     // assume that concrete section is accessed when proc is call
     // $o1 - spine_neck
     // $o2 - spine_head
-    $o1 {
+    // $3 - rel
+    $o1.sec {
         L = spine_neck_len
         diam = spine_neck_diam
 
@@ -41,10 +37,8 @@ proc attach_spine() {
         taur_cad=14
         insert ds
         insert dca
-        printf("NECK LEN: %.2f\n", L)
-        printf("NECK DIAM: %.2f\n", diam)
     }
-    $o1.sec {
+    $o2.sec {
         L = spine_head_len
         diam = spine_head_diam
         insert pas
@@ -63,20 +57,12 @@ proc attach_spine() {
         depth_cad=spine_head_diam/2
         insert ds
         insert dca
-
-        printf("HEAD LEN: %.2f\n", L)
-        printf("HEAD DIAM: %.2f\n", diam)
     }
 
-    // add spines to lists
-    $o1.sec spine_neck_list.append()
-    $o2.sec spine_head_list.append()
-
-    // connect neck to section
-    connect $o1.sec(0), rel
-    print secname(), rel
     // connect head to neck
     $o1.sec connect $o2.sec(0), 1
+    // connect neck to section
+    connect $o1.sec(0), $3
     // loc(0.5) - access to 'this' section, which is accessed before proc is called
     //$o1.sec loc(0.5)
 }

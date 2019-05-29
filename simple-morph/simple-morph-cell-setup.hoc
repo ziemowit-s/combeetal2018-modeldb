@@ -4,6 +4,7 @@
 
 strdef sectype
 objref CAN_temp, CAL_temp, CAT_temp, KAD_temp, KAP_temp, NA_temp
+soma distance()
 
 // Set passive membrane properties
 Rm_trunk     = 36900 // Non-oblique dendritic specific membrane resistance.")
@@ -105,7 +106,6 @@ soma {
 	insert cad  // calcium pump/buffering mechanism
 		taur_cad=20
 	//insert cabalan  // calcium pump/buffering mechanism
-	tmpo2.color(2)
 }
 
 axon {
@@ -131,7 +131,6 @@ forsec "trunk" {
 	//ORIG>>// apical_h_insert_sig($o1)    // Inserting h-current
 	//NDF>>>	apical_caR_caLH_insert($o1) // Inserting Ca++ R-type and Ca++ L-type currents
 	for (x) {
-		xdist = find_vector_distance_precise(secname(),x)
 		xdist=distance(x)
 		insert car
 		gcabar_car(x) = 0.1*soma_car
@@ -147,7 +146,6 @@ forsec "trunk" {
 	caT_distal_maxfactor = 4   //ORIG>> maximum cond. factor in dendrites
 	caT_distal_distance  = 350 //ORIG>> distance in dendrites for maximum cond.
 	for (x) {
-		xdist = find_vector_distance_precise(secname(),x)
 		xdist = distance(x)
 		fr = xdist/caT_distal_distance
 		insert cat
@@ -163,7 +161,6 @@ forsec "trunk" {
 	//ORIG>>// kca_distal_maxfactor = 0 //maximum cond. factor in dendrites
     kca_distal_distance  = 200 //ORIG>> distance in dendrites for maximum cond.
 	for (x) {
-		xdist = find_vector_distance_precise(secname(),x)
 		xdist = distance(x)
 		fr = xdist/kca_distal_distance
 		insert cad    // calsium pump/buffering mechanism
@@ -220,7 +217,6 @@ forsec "trunk" {
 	cm             = Cm_trunk
 	//ORIG>>>// Rm_sigmoid($o1)   // configure Rm along apical trunk
 	//ORIG>>>//  Ra_sigmoid($o1)   // configure Ra along apical trunk
-	tmpo2.color(4)
 }
 
 
@@ -228,7 +224,6 @@ forsec "apic" {
 	//ORIG>>//         apical_h_insert_sig($o1)    // Inserting h-current
 	//NDF>>>	apical_caR_caLH_insert($o1) // Inserting Ca++ R-type and Ca++ L-type currents
 	for (x) {
-		xdist = find_vector_distance_precise(secname(),x)
 		xdist=distance(x)
 		insert car
 		gcabar_car(x) = 0.1*soma_car
@@ -245,7 +240,6 @@ forsec "apic" {
 	caT_distal_maxfactor = 4  // ORIG>> maximum cond. factor in dendrites")
 	caT_distal_distance  = 350 // ORIG>> distance in dendrites for maximum cond.")
 	for (x) {
-		xdist = find_vector_distance_precise(secname(),x)
 		xdist=distance(x)
 		fr = xdist/caT_distal_distance
 		insert cat
@@ -262,7 +256,6 @@ forsec "apic" {
 	kca_distal_distance = 200 // ORIG>> distance in dendrites for maximum cond.")
 
 	for (x) {
-		xdist = find_vector_distance_precise(secname(),x)
 		xdist=distance(x)
 		fr = xdist/kca_distal_distance
 		insert cad    // calsium pump/buffering mechanism
@@ -321,7 +314,6 @@ forsec "apic" {
 	cm        = Cm_non_trunk
 	//ORIG>>//Rm_sigmoid($o1)   // configure Rm along apical trunk
 	//ORIG>>//Ra_sigmoid($o1)   // configure Ra along apical trunk
-	tmpo2.color(3)
 }
 
 forsec "soma" { g_pas= 1/Rm_soma} // force Rm at all soma sections
