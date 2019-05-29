@@ -9,11 +9,12 @@ create soma, trunk[ntrunk], apic[napic], axon
 load_file("simple-morph/simple-morph-cell-setup.hoc")
 
 // MORPHOLOGY
-l_general = 50
-diam_general = 1
+l_general = 100
+diam_general = 2
 soma {
-    L = 10
-    diam = 5
+    L = 18
+    diam = 18
+    Ra = 123.0
 }
 axon {
     L = l_general
@@ -55,6 +56,30 @@ for i=0, napic-1 {
     spine_head[i] spine_head_ref = new SectionRef()
     apic[i] attach_spine(spine_neck_ref, spine_head_ref, rel)
 }
+
+objref apc, v1
+// APC
+// for -14 threshold - it counts # of somatic spikes
+proc insert_APC() {
+	apc = new APCount(0.5)
+	apc.thresh = $1
+	v1 = new Vector()
+	apc.record(v1)
+}
+
+access soma
+objref stim
+stim = new IClamp(0.5)
+
+stim.del = 100
+stim.dur = 100
+stim.amp = 0.2
+
+tstop=400
+
+th=-14
+insert_APC(th)
+
 
 // NEURON SHAPE SHOW
 objref shape
